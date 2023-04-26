@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-public class BlankLinearOpMode extends LinearOpMode {
+@autonomous(name = "Autonomous")
+public class Autonomous extends LinearOpMode {
   private DcMotor FL;
   private DcMotor FR;
   private DcMotor BL;
@@ -21,37 +22,37 @@ public class BlankLinearOpMode extends LinearOpMode {
   
   @Override
   public void runOpMode() {
-      FL = hardwareMap.get(DcMotor.class, "FL");
-      FR = hardwareMap.get(DcMotor.class, "FR");
-      BL = hardwareMap.get(DcMotor.class, "BL");
-      BR = hardwareMap.get(DcMotor.class, "BR");
-      
-      private hardwareMap FL_hardwareMap = null;
-      private hardwareMap FR_hardwareMap = null;
-      private hardwareMap BL_hardwareMap = null;
-      private hardwareMap BR_hardwareMap = null;
+    FL = hardwareMap.get(DcMotor.class, "FL");
+    FR = hardwareMap.get(DcMotor.class, "FR");
+    BL = hardwareMap.get(DcMotor.class, "BL");
+    BR = hardwareMap.get(DcMotor.class, "BR");
+
+
+    FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    FR.setDirection(DcMotorSimple.Direction.REVERSE);
+    BR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+    FLPos = 0;
+    FRPos = 0;
+    BLPos = 0;
+    BRPos = 0;
+
+    waitForStart();
     
-      FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      
-      BL.setDirection(DcMotorSimple.Direction.REVERSE);
-      BR.setDirection(DcMotorSimple.Direction.REVERSE);
-      
-      FLPos = 0;
-      FRPos = 0;
-      BLPos = 0;
-      BRPos = 0;
-      
-      waitForStart();
-      drive(1000, 1000, 0.25);
-      drive(1000, 1000, 0.25);
-      drive(1000, -1000, 0.25);
-      drive(1000, -1000, 0.25);
+    drive(1000, 1000, 1000, 1000, 0.25);
+    drive(1000, 1000, 1000, 1000, 0.25);
+    drive(1000, -1000, 1000, -1000, 0.25);
+    drive(1000, -1000, 1000, -1000, 0.25);
   }
-    
+  
+  
   private void drive(int FLTarget, int FRTarget, int BLTarget, int BRTarget, double speed) {
+
+
       FLPos += FLTarget;
       FRPos += FRTarget;
       BLPos += BLTarget;
@@ -61,21 +62,25 @@ public class BlankLinearOpMode extends LinearOpMode {
       FR.setTargetPosition(FRPos);
       BL.setTargetPosition(BLPos);
       BR.setTargetPosition(BRPos);
+    
+      FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      BR.setMode(DcMotor.RunMode.RUN_TO_POSITION); 
+    
+      FL.setPower(speed);
+      FR.setPower(speed);
+      BL.setPower(speed);
+      BR.setPower(speed);
       
-      FL.setMode(DCMotor.RunMode.RUN_TO_POSITION);
-      FR.setMode(DCMotor.RunMode.RUN_TO_POSITION);
-      BL.setMode(DCMotor.RunMode.RUN_TO_POSITION);
-      BR.setMode(DCMotor.RunMode.RUN_TO_POSITION);
-      
-      FL.setPower(drive);
-      FR.setPower(drive);
-      BL.setPower(drive);
-      BR.setPower(drive);
       
       while(opModeIsActive() && FL.isBusy() && FR.isBusy() && BL.isBusy() && BR.isBusy()) {
           idle();
       }
+       
+
+   }
         
-        
-      
-    }
+     
+  
+  }
